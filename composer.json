@@ -1,5 +1,5 @@
 {
-  "name": "adapter-pabbly",
+  "name": "krishnaitbpl/adapter-pabbly",
   "description": "Provides connections to work with the Pabbly API",
   "homepage": "https://pabbly.com",
   "keywords": ["pabbly-adapter"],
