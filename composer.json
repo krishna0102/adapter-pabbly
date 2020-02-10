@@ -11,6 +11,7 @@
       "homepage": "http://christoph.kappestein.com"
     }
   ],
+  "minimum-stability": "dev",
   "require": {
     "php": ">=7.0@stable",
     "fusio/engine": "^3.0@stable"
