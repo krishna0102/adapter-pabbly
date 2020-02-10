@@ -1,8 +1,8 @@
 {
-  "name": "fusio/adapter-pabbly",
+  "name": "adapter-pabbly",
   "description": "Provides connections to work with the Pabbly API",
   "homepage": "https://pabbly.com",
-  "keywords": ["fusio-adapter"],
+  "keywords": ["pabbly-adapter"],
   "license": "AGPL-3.0",
   "authors": [
     {
