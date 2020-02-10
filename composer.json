@@ -1,0 +1,31 @@
+{
+  "name": "fusio/adapter-pabbly",
+  "description": "Provides connections to work with the Pabbly API",
+  "homepage": "https://pabbly.com",
+  "keywords": ["fusio-adapter"],
+  "license": "AGPL-3.0",
+  "authors": [
+    {
+      "name": "Krishna Thapa",
+      "email": "krishnaitbpl@gmail.com",
+      "homepage": "http://christoph.kappestein.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "fusio/engine": "^3.0",
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fusio\\Adapter\\Pabbly\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Fusio\\Adapter\\Pabbly\\Tests\\": "tests/"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "connectionClass": [
+    "Fusio\\Adapter\\Pabbly\\Connection\\Pabbly"
+  ],
+  "paymentClass": [
+    "Fusio\\Adapter\\Pabbly\\Provider\\Pabbly"
+  ]
+}
