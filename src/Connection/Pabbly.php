@@ -25,8 +25,8 @@ use Fusio\Engine\ConnectionInterface;
 use Fusio\Engine\Form\BuilderInterface;
 use Fusio\Engine\Form\ElementFactoryInterface;
 use Fusio\Engine\ParametersInterface;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Rest\ApiContext;
+// use PayPal\Auth\OAuthTokenCredential;
+// use PayPal\Rest\ApiContext;
 
 /**
  * Paypal
@@ -48,36 +48,38 @@ class Pabbly implements ConnectionInterface
      */
     public function getConnection(ParametersInterface $config)
     {
-        $apiContext = new ApiContext(
-            new OAuthTokenCredential(
-                $config->get('client_id'),
-                $config->get('client_secret')
-            )
-        );
+        return $config;
+        // $apiContext = new ApiContext(
+        //     new OAuthTokenCredential(
+        //         $config->get('client_id'),
+        //         $config->get('client_secret')
+        //     )
+        // );
 
-        $params = [
-            'mode' => $config->get('mode'),
-        ];
+        // $params = [
+        //     'mode' => $config->get('mode'),
+        // ];
 
-        if (defined('PSX_PATH_CACHE')) {
-            $cacheDir = PSX_PATH_CACHE;
-        } else {
-            $cacheDir = sys_get_temp_dir();
-        }
+        // if (defined('PSX_PATH_CACHE')) {
+        //     $cacheDir = PSX_PATH_CACHE;
+        // } else {
+        //     $cacheDir = sys_get_temp_dir();
+        // }
 
-        $logLevel = $config->get('log_level');
-        if (!empty($logLevel) && $logLevel != 'NONE') {
-            $params['log.LogEnabled'] = true;
-            $params['log.FileName'] = $cacheDir . '/paypal.log';
-            $params['log.LogLevel'] = $logLevel;
-        }
+        // $logLevel = $config->get('log_level');
+        // if (!empty($logLevel) && $logLevel != 'NONE') {
+        //     $params['log.LogEnabled'] = true;
+        //     $params['log.FileName'] = $cacheDir . '/paypal.log';
+        //     $params['log.LogLevel'] = $logLevel;
+        // }
 
-        $params['cache.enabled'] = true;
-        $params['cache.FileName'] = $cacheDir . '/paypal.cache';
+        // $params['cache.enabled'] = true;
+        // $params['cache.FileName'] = $cacheDir . '/paypal.cache';
 
-        $apiContext->setConfig($params);
+        // $apiContext->setConfig($params);
 
-        return $apiContext;
+        // return $apiContext;
+
     }
 
     public function configure(BuilderInterface $builder, ElementFactoryInterface $elementFactory)
@@ -95,9 +97,9 @@ class Pabbly implements ConnectionInterface
             'ERROR'   => 'ERROR',
         ];
 
-        $builder->add($elementFactory->newSelect('mode', 'Mode', $modes, 'PayPal provides live and a sandbox environments for API calls. The live environment moves real money while the sandbox environment allows you to test your application with mock money before you go live.'));
-        $builder->add($elementFactory->newInput('client_id', 'Client ID', 'text', 'Client id obtained from the developer portal'));
-        $builder->add($elementFactory->newInput('client_secret', 'Client Secret', 'text', 'Client secret obtained from the developer portal'));
-        $builder->add($elementFactory->newSelect('log_level', 'Log level', $levels, 'Logging level options are based on mode on which SDK is running'));
+        // $builder->add($elementFactory->newSelect('mode', 'Mode', $modes, 'PayPal provides live and a sandbox environments for API calls. The live environment moves real money while the sandbox environment allows you to test your application with mock money before you go live.'));
+        // $builder->add($elementFactory->newInput('client_id', 'Client ID', 'text', 'Client id obtained from the developer portal'));
+        // $builder->add($elementFactory->newInput('client_secret', 'Client Secret', 'text', 'Client secret obtained from the developer portal'));
+        // $builder->add($elementFactory->newSelect('log_level', 'Log level', $levels, 'Logging level options are based on mode on which SDK is running'));
     }
 }

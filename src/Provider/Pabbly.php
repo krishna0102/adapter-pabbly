@@ -26,8 +26,8 @@ use Fusio\Engine\Model\TransactionInterface;
 use Fusio\Engine\ParametersInterface;
 use Fusio\Engine\Payment\PrepareContext;
 use Fusio\Engine\Payment\ProviderInterface;
-use PayPal\Api;
-use PayPal\Rest\ApiContext;
+// use PayPal\Api;
+// use PayPal\Rest\ApiContext;
 use PSX\Http\Exception as StatusCode;
 
 /**
@@ -47,13 +47,14 @@ class Pabbly implements ProviderInterface
         $apiContext = $this->getApiContext($connection);
 
         // create payment
-        $payment = $this->createPayment($product, $context);
-        $payment->create($apiContext);
+        // $payment = $this->createPayment($product, $context);
+        // $payment->create($apiContext);
 
         // update transaction details
-        $this->updateTransaction($payment, $transaction);
+        $this->updateTransaction($transaction);
 
-        return $payment->getApprovalLink();
+        return "Payment success";
+        // return $payment->getApprovalLink();
     }
 
     /**
@@ -61,18 +62,18 @@ class Pabbly implements ProviderInterface
      */
     public function execute($connection, ProductInterface $product, TransactionInterface $transaction, ParametersInterface $parameters)
     {
-        $apiContext = $this->getApiContext($connection);
+        // $apiContext = $this->getApiContext($connection);
 
-        $payerId   = $parameters->get('PayerID');
-        $execution = new Api\PaymentExecution();
-        $execution->setPayerId($payerId);
+        // $payerId   = $parameters->get('PayerID');
+        // $execution = new Api\PaymentExecution();
+        // $execution->setPayerId($payerId);
 
-        // execute payment
-        $payment = Api\Payment::get($transaction->getRemoteId(), $apiContext);
-        $payment->execute($execution, $apiContext);
+        // // execute payment
+        // $payment = Api\Payment::get($transaction->getRemoteId(), $apiContext);
+        // $payment->execute($execution, $apiContext);
 
-        // update transaction details
-        $this->updateTransaction($payment, $transaction);
+        // // update transaction details
+        $this->updateTransaction($transaction);
     }
 
     /**
@@ -81,78 +82,27 @@ class Pabbly implements ProviderInterface
      */
     private function getApiContext($connection)
     {
-        if ($connection instanceof ApiContext) {
-            return $connection;
-        } else {
-            throw new StatusCode\InternalServerErrorException('Connection must return a Paypal API context');
-        }
+        return $connection;        
     }
 
-    /**
-     * @param \Fusio\Engine\Model\ProductInterface $product
-     * @param \Fusio\Engine\Payment\PrepareContext $context
-     * @return \PayPal\Api\Payment
-     */
-    private function createPayment(ProductInterface $product, PrepareContext $context)
-    {
-        $payer = new Api\Payer();
-        $payer->setPaymentMethod('paypal');
-
-        $item = new Api\Item();
-        $item->setName($product->getName())
-            ->setCurrency($context->getCurrency())
-            ->setQuantity(1)
-            ->setSku($product->getId())
-            ->setPrice($product->getPrice());
-
-        $itemList = new Api\ItemList();
-        $itemList->setItems([$item]);
-
-        $amount = new Api\Amount();
-        $amount->setCurrency($context->getCurrency())
-            ->setTotal($product->getPrice());
-
-        $transaction = new Api\Transaction();
-        $transaction->setAmount($amount)
-            ->setItemList($itemList);
-
-        $redirectUrls = new Api\RedirectUrls();
-        $redirectUrls->setReturnUrl($context->getReturnUrl())
-            ->setCancelUrl($context->getCancelUrl());
-
-        $payment = new Api\Payment();
-        $payment->setIntent('sale')
-            ->setPayer($payer)
-            ->setRedirectUrls($redirectUrls)
-            ->setTransactions([$transaction]);
-
-        return $payment;
-    }
 
     /**
      * @param \PayPal\Api\Payment $payment
      * @param \Fusio\Engine\Model\TransactionInterface $transaction
      */
-    private function updateTransaction(Api\Payment $payment, TransactionInterface $transaction)
+    private function updateTransaction(TransactionInterface $transaction)
     {
-        $transaction->setStatus($this->getTransactionStatus($payment));
-        $transaction->setRemoteId($payment->getId());
+        $transaction->setStatus($this->getTransactionStatus());
+        // $transaction->setRemoteId($payment->getId());
+        $transaction->setRemoteId("Pabbly-transac");
     }
 
     /**
      * @param \PayPal\Api\Payment $payment
      * @return integer
      */
-    private function getTransactionStatus(Api\Payment $payment)
+    private function getTransactionStatus()
     {
-        if ($payment->getState() == 'created') {
-            return TransactionInterface::STATUS_CREATED;
-        } elseif ($payment->getState() == 'approved') {
-            return TransactionInterface::STATUS_APPROVED;
-        } elseif ($payment->getState() == 'failed') {
-            return TransactionInterface::STATUS_FAILED;
-        }
-
-        return TransactionInterface::STATUS_UNKNOWN;
+        return TransactionInterface::STATUS_APPROVED;
     }
 }
